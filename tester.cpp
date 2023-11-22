@@ -1,4 +1,4 @@
-#include <LFU.hpp>
+#include <Mark0.hpp>
 
 int main()
 {
@@ -6,14 +6,14 @@ int main()
 
     int requests[] = {1, 2, 3, 4, 5, 3, 2, 3, 3, 4, 5};
 
-    LFUcache Cache;
+    Mark0cache Cache;
 
     for (int i = 0; i < sizeof(requests) / sizeof(requests[0]); i++)
     {
         int r = requests[i];
         printf("Request %d ", requests[i]);
 
-        if (!Cache.request(r))
+        if (!Cache.request(r,0))
         {
             printf("Miss");
         }
