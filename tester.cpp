@@ -1,4 +1,4 @@
-#include <Mark0.hpp>
+#include <MarkP.hpp>
 
 int main()
 {
@@ -6,7 +6,7 @@ int main()
 
     int requests[] = {1, 2, 3, 4, 5, 3, 2, 3, 3, 4, 5};
 
-    Mark0cache Cache;
+    MarkPcache Cache;
 
     for (int i = 0; i < sizeof(requests) / sizeof(requests[0]); i++)
     {
