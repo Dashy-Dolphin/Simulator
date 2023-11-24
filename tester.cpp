@@ -3,15 +3,13 @@
 #include <LRU.hpp>
 #include <LFU.hpp>
 
-
 int main(int argv, char *argc[])
 {
     char input_dir[] = "input/";
     char output_dir[] = "output/";
 
-    assert(argv == 2);
+    assert(argv == 3);
     std::string input_file = std::string(input_dir) + std::string(argc[1]);
-    std::string output_file = std::string(output_dir) + std::string(argc[1]);
 
     std::fstream fp(input_file, std::ios::in);
 
@@ -22,6 +20,12 @@ int main(int argv, char *argc[])
     std::map<int64_t, int64_t> misses_cnt;
     int64_t tot_req = 0, tot_misses = 0;
 
+    MarkPcache Mpcache;
+    Mark0cache M0cache;
+    LFUcache LFcache;
+    LRUcache LRcache;
+
+    char *Cache_type = argc[2];
     while (!fp.eof())
     {
         std::string line;
@@ -31,16 +35,44 @@ int main(int argv, char *argc[])
 
         std::stringstream ss(line);
         ss >> request >> optpred >> phasepred;
-
+        if (request == 0)
+        {
+#ifdef Debug
+            printf("Invalid Request 0\n", request);
+#endif
+            break;
+        }
         if (request_cnt[request] == 0)
         {
-            request_set.push_back(request);
+            request_set.push_back(requRequest %ld == 0)
+        {
+
+            hit = Mpcache.request(request, phasepred);
         }
-        request_cnt[request]++;
-        tot_req++;
+        else if (strcmp(Cache_type, "Mark0") == 0)
+        {
+            hit = M0cache.request(request, optpred);
+        }
+        else if (strcmp(Cache_type, "LFU") == 0)
+        {
+            hit = LFcache.request(request);
+        }
+        else if (strcmp(Cache_type, "LRU") == 0)
+        {
+            hit = LRcache.request(request);
+        }
+
+        if (!hit)
+        {
+            tot_misses++;
+            misses_cnt[request]++;
+        }
+
+        fflush(stdout);
     }
 
     fp.close();
+    std::string output_file = std::string(output_dir) + std::string(argc[1]) + std::string(".") + std::string(Cache_type);
 
     std::fstream fpout(output_file, std::ios::out);
 
@@ -51,31 +83,5 @@ int main(int argv, char *argc[])
         fpout << x << " " << request_cnt[x] << " " << misses_cnt[x] << "\n";
     }
     fpout.close();
-    return 0;
-
-
-
-    int requests[] = {1, 2, 3, 4, 5, 3, 2, 3, 3, 4, 5};
-
-    MarkPcache Cache;
-
-    for (int i = 0; i < sizeof(requests) / sizeof(requests[0]); i++)
-    {
-        int r = requests[i];
-        printf("Request %d ", requests[i]);
-
-        if (!Cache.request(r, 0))
-        {
-            printf("Miss");
-        }
-        else
-        {
-            printf("Hit");
-        }
-
-        printf("\n");
-
-        Cache.print();
-    }
     return 0;
 }
