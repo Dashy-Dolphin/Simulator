@@ -2,7 +2,6 @@
 #ifndef MARK0_HPP
 #define MARK0_HPP
 
-const int CACHELINE_SIZE = 3;
 // This Cache just evicts the first position when all the positions are occupied.
 // There is ordering among the free positions to be served.
 
@@ -25,5 +24,6 @@ private:
     std::set<int64_t> previouscache;   // contains the previous iteration cache elements
     std::set<int64_t> commonunmarked;  // contains the common elements which are unmarked
     std::map<int64_t,int64_t> postomark; //mapping from position to mark
+    const int CACHELINE_SIZE = 3;
 };
 #endif

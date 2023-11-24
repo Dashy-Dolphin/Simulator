@@ -1,8 +1,6 @@
 #include <bits/stdc++.h>
 #ifndef MARKP_HPP
-#define MARKP_HPP
-
-const int CACHELINE_SIZE = 3;
+#define MARKP_HPP 
 // This Cache just evicts the first position when all the positions are occupied.
 // There is ordering among the free positions to be served.
 
@@ -25,5 +23,6 @@ private:
     std::map<int64_t,int64_t> pagestopred;  //marked pages into cache
     std::vector<int64_t> unmarked1; //unmarked pages into cache in prediction 0
     std::vector<int64_t> unmarked0; //unmarked pages into cache in prediction 1
+    const int CACHELINE_SIZE = 3;
 };
 #endif

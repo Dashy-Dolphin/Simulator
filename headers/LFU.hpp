@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #ifndef LFU_HPP
 #define LFU_HPP
-const int CACHELINE_SIZE = 3;
+ 
 // This Cache just evicts the first position when all the positions are occupied.
 // There is ordering among the free positions to be served.
 
@@ -24,5 +24,6 @@ private:
     std::set<std::pair<int64_t,int64_t>,std::less<std::pair<int64_t,int64_t>>> positions; // sorted according to last usage
                                    // first one is the last used.
     std::map<int64_t,int64_t> postofreq;
+    const int CACHELINE_SIZE = 3;
 };
 #endif
