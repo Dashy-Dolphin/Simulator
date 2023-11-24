@@ -5,6 +5,7 @@ Flags=-g -O3
 Target=MarkP  Mark0 LRU LFU
 Input=normal_3_8_55
 Cache=MarkP
+Error=0.5
 
 .PHONY: build Replacementpolicies run clean
 build: Replacementpolicies
@@ -12,6 +13,6 @@ build: Replacementpolicies
 Replacementpolicies:
 	$(foreach v,$(Target),g++ -std=c++14 $(Flags) -I $(Header_Dir) -c -o $(Build_Dir)$(v).o  $(Library_Dir)/$(v).cpp ; )	
 run:
-	./$(Build_Dir)/tester $(Input) $(Cache) > log.txt
+	./$(Build_Dir)/tester $(Input) $(Cache) $(Error) > log.txt
 clean:
 	rm -f build/*

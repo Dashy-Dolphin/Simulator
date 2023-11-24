@@ -21,9 +21,8 @@ private:
     std::set<int64_t> freepositions; // positions are numbered from 1 to CACHELINE_SIZE
     std::map<int64_t, int64_t> pagetoposition;
     std::map<int64_t, int64_t> positiontopage;
-    std::set<int64_t> previouscache;   // contains the previous iteration cache elements
-    std::set<int64_t> commonunmarked;  // contains the common elements which are unmarked
-    std::map<int64_t,int64_t> postomark; //mapping from position to mark
+    std::set<int64_t> previouscache;
+    std::map<int64_t,int64_t> pagetomark;
     int CACHELINE_SIZE = 3;
 };
 #endif

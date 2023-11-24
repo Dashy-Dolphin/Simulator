@@ -3,6 +3,10 @@
 #include <LRU.hpp>
 #include <LFU.hpp>
 #include <cstring>
+int64_t getrand()
+{
+    return rand();
+}
 // Arguments are input_file_name and cache_type
 int main(int argv, char *argc[])
 {
@@ -10,10 +14,13 @@ int main(int argv, char *argc[])
     char input_dir[] = "input/";
     char output_dir[] = "output/";
 
-    assert(argv == 3);
+    assert(argv == 4);
     char *Cache_type = argc[2];
     std::string output_file = std::string(output_dir) + std::string(argc[1]) + std::string(".") + std::string(Cache_type);
     std::string input_file = std::string(input_dir) + std::string(argc[1]);
+
+    double alpha = atof(argc[3]);
+    const int error_multiplier = 1000;
 
     std::fstream fp(input_file, std::ios::in);
     printf("Opening input file : %s\n", argc[1]);
@@ -67,11 +74,21 @@ int main(int argv, char *argc[])
 
         if (strcmp(Cache_type, "MarkP") == 0)
         {
+            int64_t rand = getrand() % error_multiplier;
+            if (rand < alpha * error_multiplier)
+            {
+                phasepred = 1 - phasepred;
+            }
 
             hit = Mpcache.request(request, phasepred);
         }
         else if (strcmp(Cache_type, "Mark0") == 0)
         {
+            int64_t rand = getrand() % error_multiplier;
+            if (rand < alpha * error_multiplier)
+            {
+                optpred = 1 - optpred;
+            }
             hit = M0cache.request(request, optpred);
         }
         else if (strcmp(Cache_type, "LFU") == 0)

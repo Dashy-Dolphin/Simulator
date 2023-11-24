@@ -1,4 +1,5 @@
 #include <Mark0.hpp>
+#define Debug
 int64_t Mark0cache::randgen()
 {
     return rand();
@@ -12,42 +13,72 @@ bool Mark0cache::request(int64_t pageid, int64_t pred)
     bool ans = true;
     if (pagetoposition.find(pageid) == pagetoposition.end())
     {
-        if (freepositions.empty() && commonunmarked.empty())
+        ans = false;
+        std::vector<int64_t> unmarked;
+        for (int i = 1; i <= CACHELINE_SIZE; i++)
         {
-            previouscache.clear();
-            commonunmarked.clear();
-            postomark.clear();
-            for (int i = 1; i <= CACHELINE_SIZE; i++)
+            if (positiontopage.find(i) != positiontopage.end())
             {
-
-                previouscache.insert(positiontopage[i]);
-                commonunmarked.insert(positiontopage[i]);
+                assert(freepositions.find(i) == freepositions.end());
+                int64_t page = positiontopage[i];
+                if (previouscache.find(page) != previouscache.end())
+                {
+                    if (pagetomark.find(page) == pagetomark.end())
+                    {
+                        unmarked.push_back(i);
+                    }
+                }
             }
         }
 
-        bool cond1 = previouscache.find(pageid) != previouscache.end();
-        bool cond3 = postomark.find(pageid) == postomark.end();
-        bool cond2 = !commonunmarked.empty();
-        bool cond4 = freepositions.empty();
-        if (cond1 && cond2 && cond3 || cond4)
-        {
-            int64_t randpos = randgen() % commonunmarked.size();
+        bool cond1 = freepositions.empty();
 
-            std::vector<int64_t> temp(commonunmarked.begin(), commonunmarked.end());
-            int64_t randpage = temp[randpos];
-            int64_t randcachepos = pagetoposition[randpage];
-            evict(randcachepos);
-            commonunmarked.erase(randpage);
+        if (freepositions.empty() && unmarked.empty())
+        {
+            pagetomark.clear();
+            previouscache.clear();
+            for (int i = 1; i <= CACHELINE_SIZE; i++)
+            {
+                assert(positiontopage.find(i) != positiontopage.end());
+                int64_t page = positiontopage[i];
+                previouscache.insert(page);
+            }
+            unmarked.clear();
+            for (int i = 1; i <= CACHELINE_SIZE; i++)
+            {
+
+                unmarked.push_back(i);
+            }
+        }
+
+        if (freepositions.empty())
+        {
+
+            assert(unmarked.size() > 0);
+            int randpos = randgen() % unmarked.size();
+#ifdef Debug
+            printf("Evicting pos %d because cache is full\n", randpos);
+#endif
+            evict(unmarked[randpos]);
+        }
+
+        else if (!unmarked.empty() && (previouscache.find(pageid) != previouscache.end()) && (pagetomark.find(pageid) == pagetomark.end()))
+        {
+            assert(unmarked.size() > 0);
+            int randpos = randgen() % unmarked.size();
+#ifdef Debug
+            printf("Evicting pos %d because page is unmarked\n", randpos);
+#endif
+            evict(unmarked[randpos]);
         }
 
         load(pageid);
-        ans = false;
     }
-
-    postomark[pageid] = 1;
+    pagetomark[pageid] = 1;
 
     if (pred == 1)
     {
+        assert(pagetoposition.find(pageid) != pagetoposition.end());
         evict(pagetoposition[pageid]);
     }
 
@@ -122,7 +153,7 @@ Mark0cache::Mark0cache(int c)
     // srand(time(0));
     CACHELINE_SIZE = c;
     freepositions.clear();
-    postomark.clear();
+
     for (int i = 1; i <= CACHELINE_SIZE; i++)
     {
         freepositions.insert(i);
