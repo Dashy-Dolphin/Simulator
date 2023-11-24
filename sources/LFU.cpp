@@ -30,7 +30,7 @@ void LFUcache::priority(int64_t pos, int64_t pri)
 
     positions.erase(positions.find({postofreq[pos], pos}));
     positions.insert({pri, pos});
-    postofreq[pos]=pri;
+    postofreq[pos] = pri;
 }
 
 bool LFUcache::load(int64_t pageid)
@@ -82,12 +82,12 @@ int64_t LFUcache::getfreeposition()
     return pos;
 }
 
-LFUcache::LFUcache()
+LFUcache::LFUcache(int c)
 {
 #ifdef Debug
     printf("Cache Initialization\n");
 #endif
-
+    CACHELINE_SIZE = c;
     for (int i = 1; i <= CACHELINE_SIZE; i++)
     {
         positions.insert({0, i});

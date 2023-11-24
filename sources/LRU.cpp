@@ -62,13 +62,13 @@ bool LRUcache::evict(int64_t position)
     if (page == 0)
     {
         positiontopage.erase(positiontopage.find(position));
-    }else{
-   
-
-    pagetoposition.erase(pagetoposition.find(page));
-    positiontopage.erase(positiontopage.find(position));
     }
+    else
+    {
 
+        pagetoposition.erase(pagetoposition.find(page));
+        positiontopage.erase(positiontopage.find(position));
+    }
 
 #ifdef Debug
     printf("Evict %ld end\n", position);
@@ -86,11 +86,12 @@ int64_t LRUcache::getfreeposition()
     return pos;
 }
 
-LRUcache::LRUcache()
+LRUcache::LRUcache(int c)
 {
 #ifdef Debug
     printf("Cache Initialization\n");
 #endif
+    CACHELINE_SIZE = c;
     positions.clear();
     for (int i = 1; i <= CACHELINE_SIZE; i++)
     {
@@ -101,7 +102,7 @@ LRUcache::LRUcache()
 void LRUcache::print()
 {
 #ifdef Debug
-        printf("Print Cache\n" );
+    printf("Print Cache\n");
 #endif
     printf("Cache\n");
     for (int64_t i = 1; i <= CACHELINE_SIZE; i++)

@@ -1,0 +1,4 @@
+Opening input file : normal_3_8_55
+Cache Size : 3
+Max Pages : 8
+Optimal Misses : 55

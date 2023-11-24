@@ -7,7 +7,7 @@
 class LRUcache
 {
 public:
-    LRUcache();
+    LRUcache(int c);
     bool request(int64_t pageid);
     void print();
 
@@ -23,6 +23,6 @@ private:
     int last_hit = 1;
     std::deque<int64_t> positions; // sorted according to last usage
                                    // first one is the last used.
-    const int CACHELINE_SIZE = 3;
+    int CACHELINE_SIZE = 3;
 };
 #endif

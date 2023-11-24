@@ -8,7 +8,7 @@
 class Mark0cache
 {
 public:
-    Mark0cache();
+    Mark0cache(int c);
     bool request(int64_t pageid,int64_t pred);
     void print();
 
@@ -24,6 +24,6 @@ private:
     std::set<int64_t> previouscache;   // contains the previous iteration cache elements
     std::set<int64_t> commonunmarked;  // contains the common elements which are unmarked
     std::map<int64_t,int64_t> postomark; //mapping from position to mark
-    const int CACHELINE_SIZE = 3;
+    int CACHELINE_SIZE = 3;
 };
 #endif

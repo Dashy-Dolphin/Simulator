@@ -114,12 +114,13 @@ int64_t Mark0cache::getfreeposition()
     }
 }
 
-Mark0cache::Mark0cache()
+Mark0cache::Mark0cache(int c)
 {
 #ifdef Debug
     printf("Cache Initialization\n");
 #endif
     // srand(time(0));
+    CACHELINE_SIZE = c;
     freepositions.clear();
     postomark.clear();
     for (int i = 1; i <= CACHELINE_SIZE; i++)

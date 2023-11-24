@@ -143,11 +143,12 @@ int64_t MarkPcache::getfreeposition()
     }
 }
 
-MarkPcache::MarkPcache()
+MarkPcache::MarkPcache(int c)
 {
 #ifdef Debug
     printf("Cache Initialization\n");
 #endif
+    CACHELINE_SIZE = c;
     freepositions.clear();
     for (int i = 1; i <= CACHELINE_SIZE; i++)
     {
