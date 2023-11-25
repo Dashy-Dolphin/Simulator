@@ -3,9 +3,9 @@ Library_Dir=sources/
 Build_Dir=build/
 Flags=-g -O3
 Target=MarkP  Mark0 LRU LFU
-Input=normal_3_8_55
-Cache=MarkP
-Error=0.5
+Input=random_25_200_128
+Cache=LFU
+Error=0
 
 .PHONY: build Replacementpolicies run clean
 build: Replacementpolicies

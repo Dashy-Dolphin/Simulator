@@ -16,7 +16,7 @@ int main(int argv, char *argc[])
 
     assert(argv == 4);
     char *Cache_type = argc[2];
-    std::string output_file = std::string(output_dir) + std::string(argc[1]) + std::string(".") + std::string(Cache_type);
+    std::string output_file = std::string(output_dir) + std::string(argc[1]) + "_" + std::string(argc[3]) + std::string(".") + std::string(Cache_type);
     std::string input_file = std::string(input_dir) + std::string(argc[1]);
 
     double alpha = atof(argc[3]);
@@ -114,11 +114,12 @@ int main(int argv, char *argc[])
     std::fstream fpout(output_file, std::ios::out);
 
     assert(fpout.is_open());
+    sort(request_set.begin(), request_set.end());
     fpout << request_set.size() << " " << tot_req << " " << tot_misses << "\n";
-    for (auto x : request_set)
-    {
-        fpout << x << " " << request_cnt[x] << " " << misses_cnt[x] << "\n";
-    }
+    // for (auto x : request_set)
+    // {
+    //     fpout << x << " " << request_cnt[x] << " " << misses_cnt[x] << "\n";
+    // }
     fpout.close();
     return 0;
 }

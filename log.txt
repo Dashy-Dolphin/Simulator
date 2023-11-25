@@ -1,5 +1,5 @@
-Opening input file : normal_3_8_55
-Cache Size : 3
-Max Pages : 8
-Optimal Misses : 55
+Opening input file : random_200_1000_605
+Cache Size : 200
+Max Pages : 1000
+Optimal Misses : 605
 Cache Initialization

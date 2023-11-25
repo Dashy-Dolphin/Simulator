@@ -2,3 +2,9 @@
 
 build/*
 
+input/*
+
+output/*
+log.txt
+mean.txt
+plots/*
